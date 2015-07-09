@@ -36,5 +36,7 @@ sudo php5enmod mcrypt
 
 sudo apt-get install php5-mysql
 
+//change dns ubuntu
+/etc/resolv.conf
 
 
