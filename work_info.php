@@ -40,3 +40,28 @@ sudo apt-get install php5-mysql
 /etc/resolv.conf
 
 
+sudo mount 192.168.2.122:/var/nfs /home/neal/Desktop/share/
+
+//faster visit wordpress help documents website
+127.0.0.1   itmwpb.com
+127.0.0.1   0.gravatar.com gravatar.com www.gravatar.com 1.gravatar.com
+127.0.0.1   fonts.googleapis.com
+127.0.0.1   kwxx.com www.kwxx.com
+127.0.0.1   demo.itmwpb.com
+127.0.0.1   maps.googleapis.com
+127.0.0.1   static.adzerk.net
+127.0.0.1   ajax.googleapis.com
+127.0.0.1   radio1.itmwpb.com
+127.0.0.1   apis.google.com
+93.184.216.127 s.w.org
+93.184.216.127 ps.w.org
+192.0.78.13 www.wordpress.com wordpress.com
+127.0.0.1   platform.twitter.com twitter.com
+127.0.0.1   www.facebook.com facebook.com
+127.0.0.1   google.com www.google.com
+127.0.0.1   madtownjamz.com www.madtownjamz.com
+127.0.0.1   grpgn.itmwpb.com
+127.0.0.1   centralmoinfo.com www.centralmoinfo.com
+127.0.0.1   951wayv.com www.951wayv.com
+127.0.0.1   s0.wp.com
+127.0.0.1   static.ak.facebook.com
