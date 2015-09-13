@@ -46,4 +46,5 @@ $cfg['DefaultLang'] = 'zh_CN';
 $cfg['ServerDefault'] = 1;
 $cfg['UploadDir'] = '';
 $cfg['SaveDir'] = '';
+$cfg['LoginCookieValidity'] = '144000';
 ?>

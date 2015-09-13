@@ -30,6 +30,9 @@ nsenter --target 5855 --mount --uts --ipc --net --pid
 //go inside the contain as a simple method
 docker exec -it allserver /bin/bash
 
+//show the configuration of the container
+docker inspect container-name
+
 //install php extension 'mycrypt' in apache
 sudo apt-get install mycrypt php5-mcrypt
 sudo php5enmod mcrypt
@@ -38,6 +41,9 @@ sudo apt-get install php5-mysql
 
 //change dns ubuntu
 /etc/resolv.conf
+
+//phpmyadmin config file
+/home/neal/repo/phpMyAdmin/libraries/config.default.php
 
 
 sudo mount 192.168.2.122:/var/nfs /home/neal/Desktop/share/
@@ -65,3 +71,7 @@ sudo mount 192.168.2.122:/var/nfs /home/neal/Desktop/share/
 127.0.0.1   951wayv.com www.951wayv.com
 127.0.0.1   s0.wp.com
 127.0.0.1   static.ak.facebook.com
+
+
+useful wordpress plugins
+query-monitor    speed up the webside backend
