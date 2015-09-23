@@ -75,3 +75,6 @@ sudo mount 192.168.2.122:/var/nfs /home/neal/Desktop/share/
 
 useful wordpress plugins
 query-monitor    speed up the webside backend
+
+useful study website
+http://www.css88.com/
