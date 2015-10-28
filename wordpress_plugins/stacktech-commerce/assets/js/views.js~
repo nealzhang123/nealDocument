@@ -1,0 +1,593 @@
+(function ($) {
+	window.sc = window.sc || {};
+
+	sc.ModalView = Backbone.View.extend({
+		el: '#store_modal',
+
+		events: {
+			'click .remodal-close': 'closeModal'
+		},
+
+		initialize: function(options){
+		},
+
+		// 加载某个视图
+		openModal: function(view, options){
+			var defaults = {
+				closeOnOutsideClick: false,
+				hashTracking: false,
+			};
+			var options = _.extend(defaults, options);
+
+			this.currentView = view;
+			this.$('#store_modal_content').html(view.$el);
+
+			this.inst = this.$el.remodal(options);
+			this.inst.open();
+		},
+		closeModal: function(){
+			this.inst.close();
+			this.currentView.undelegateEvents();
+			this.currentView.remove();
+		}
+	});
+
+	// 商城的单页面
+	sc.MainView = Backbone.View.extend({
+		el: '#stacktech-store',
+		initialize: function(options){
+
+			// 加载全局的modal视图
+			sc.globalModalView = new sc.ModalView();
+
+			_.bindAll(this, 'switchView');
+			// 绑定事件
+			// 切换视图
+			sc.Events.on('switchView', this.switchView);
+			// 创建试用订单
+			sc.Events.on('addTrailOrder', this.addTrailOrder);
+			// 创建购买订单
+			sc.Events.on('addOrder', this.addOrder);
+			// 添加到购物车
+			sc.Events.on('addToCart', this.addToCart);
+		},
+		checkoutPage: function() {
+			this.switchView(new sc.CheckoutView({model: window.sc.globalCart}));
+		},
+		storePage: function() {
+			var searchModel = new sc.SearchModel();
+			searchModel.set('product_type', window.stacktech_product_type);
+			this.switchView(new sc.ProductListView({model:searchModel}));
+		},
+		switchView: function(view){
+			if( typeof this.currentView != 'undefined' ) {
+				this.currentView.undelegateEvents();
+				this.currentView.remove();
+			}
+			this.currentView = view;
+			this.render();
+		},
+		themePage: function(){
+			var searchModel = new sc.SearchModel();
+			searchModel.set('product_type', 'theme');
+			this.switchView(new sc.ProductListView({model:searchModel}));
+		},
+		render: function(){
+			this.$el.html(this.currentView.$el);
+		},
+		productPage: function(id) {
+			var productModel = new sc.ProductModel();
+			productModel.set('id', id);
+			productModel.fetch({
+				data: {
+					action: 'get_product_detail',
+				},
+				success: function(model, response, options){
+				},
+			});
+
+			var detailView = new sc.ProductDetailView({model: productModel});
+			sc.globalModalView.openModal(detailView);
+		},
+
+		// 购买下单
+		addOrder: function(cartModel) {
+			var order = new sc.OrderModel();
+			sc.startLoading({text: '正在生成订单...'});
+			cartModel.get('products').each(function(model){
+				order.addProduct(model);
+			});
+			order.resetTotalPrice();
+			order.save({
+				order_type: 'sale',
+			},{
+				data:{
+					action: 'add_order',
+				},
+				success: function(model, response, options){
+					// 如果没有错误
+					sc.addMessage('订单保存成功');
+					document.location.href = $('#stacktech_pay_url').val() + '&order_id=' + model.get('id');
+
+				}
+			});
+		},
+		
+		// 如果是试用订单则直接下单
+		addTrailOrder: function(product){
+			sc.startLoading({text: '正在开启试用...'});
+			var order = new sc.OrderModel();
+			var orderProduct = new sc.OrderProductModel({
+				product_id: product.get('id')
+			});
+			order.addProduct(orderProduct);
+			order.save({
+				order_type: 'trail',
+			},{
+				data:{
+					action: 'add_order',
+				},
+				success: function(model, response, options){
+					// 如果没有错误
+					product.set('is_trailing', 1);
+					sc.endLoading();
+					sc.addMessage('成功开启试用');
+				}
+			});
+		},
+
+		// 直接加进购物车
+		addToCart: function(product, params) {
+			// 创建订单商品
+			var orderProduct = new sc.OrderProductModel();
+			orderProduct.set('product_id', product.get('id'));
+			orderProduct.set('month_discount', product.get('month_discount'));
+			orderProduct.set('price', product.getCurrentPrice());
+			orderProduct.set('allow_purchase_forever', product.get('allow_purchase_forever'));
+			if(product.get('allow_purchase_forever') == 0){
+				orderProduct.set('period', params.period);
+			}else{
+				orderProduct.set('period', 0);
+			}
+			orderProduct.resetTotal();
+			orderProduct.set('post_title', product.get('post_title'));
+			window.sc.globalCart.addProduct(orderProduct);
+			window.sc.globalCart.save({
+			},{
+				data:{
+					action: 'add_to_cart',
+				},
+				success: function(model, response, options){
+					sc.addMessage('产品已经加入购物车');
+				}
+			});
+		},
+	});
+
+	sc.CheckoutView = Backbone.View.extend({
+		initialize: function(options){
+			this.listenTo(this.model, 'change', this.render);
+			this.render();
+		},
+		events: {
+			'click #goto_pay': 'gotoPay',
+		},
+
+		render: function(){
+			var data = this.model.toJSON();
+			if (!_.isUndefined(data.products) && data.products.length > 0){
+				data.products = data.products.toJSON();
+			}
+			this.$el.html((_.template($('#checkout-page').html()))(data));
+		},
+
+		gotoPay: function() {
+			// 这里我们会先生成一个订单
+			sc.Events.trigger('addOrder', this.model);
+		},
+	});
+
+	sc.CartView = Backbone.View.extend({
+		el: '.stacktech-cart-menu',
+		initialize: function(options){
+			_.bindAll(this, 'removeCartProduct');
+			// 如果购物车有任何改动
+			this.listenTo(this.model, 'sync', this.render);
+
+			// 所有从购物车移除商品，必须要触发这个事件
+			sc.Events.on('removeCartProduct', this.removeCartProduct);
+
+			this.render();
+		},
+		events: {
+			'click #empty_cart_btn': 'emptyCart',
+			'click #goto_checkout': 'gotoCheckout',
+		},
+		render: function() {
+			// 如果购物车里面是空的
+			if ( this.model.get('products').length > 0 ) {
+				var target = this.$el.find('.ab-sub-wrapper');
+				target.html(_.template($('#cart-template').html())({total: this.model.get('total')}));
+				this.$('#stacktech-total-num').html(this.model.get('products').length);
+				this.model.get('products').each(this.addOrderProductView, this);
+			} else {
+				this.$('#stacktech-total-num').html(0);
+				this.addEmptyCart();
+			}
+		},
+
+		addEmptyCart: function() {
+			this.$el.find('.ab-sub-wrapper').html($('#emtpy-cart-template').html());
+		},
+
+		addOrderProductView: function(product) {
+			var target = this.$el.find('#cart-body');
+			target.append((new sc.CartProductView({model: product})).$el);
+		},
+
+		removeCartProduct: function(model) {
+			model.destroy();
+			// 做出请求
+			this.model.save({
+			},{
+				data:{
+					action: 'add_to_cart',
+				},
+				success: function(model, response, options){
+				}
+			});
+		},
+
+		emptyCart: function(e) {
+			e.preventDefault();
+			var that = this;
+			that.model.empty();
+			that.model.save({
+			},{
+				data:{
+					action: 'add_to_cart',
+				},
+				success: function(model, response, options){
+					sc.addMessage('成功清空购物车');
+				}
+			});
+			return false;
+
+		},
+
+		gotoCheckout: function(e) {
+			e.preventDefault();
+			window.sc.globalRouter.navigate('checkout', {trigger: true});
+		}
+	});
+
+	sc.CartProductView = Backbone.View.extend({
+		tagName: 'tr',
+		className: '.cart-product',
+		events: {
+			'click .cart-delete-btn': 'deleteCartProduct',
+			'change .period': 'setPeriod'
+		},
+		initialize: function(options){
+			//this.listenTo(this.model, 'change', this.render);
+			this.listenTo(this.model, 'destroy', this.rm);
+			this.render();
+		},
+		render: function() {
+			this.$el.html((_.template($('#cart-product-template').html()))(this.model.toJSON()));
+		},
+		rm: function(){
+			this.undelegateEvents();
+			this.remove();
+		},
+		deleteCartProduct: function(e){
+			e.preventDefault();
+			// 这里传个model参数是为了让下面的商品列表可以再此添加进购物车
+			sc.Events.trigger('removeCartProduct', this.model);
+		},
+		setPeriod: function(e){
+			var num = $(e.currentTarget).val();
+			this.model.set('period', num);
+			this.model.resetTotal();
+			window.sc.globalCart.save({
+			},{
+				data:{
+					action: 'add_to_cart',
+				},
+				success: function(model, response, options){
+				}
+			});
+		}
+	});
+
+	sc.ProductListView = Backbone.View.extend({
+		tagName: 'ul',
+		initialize: function(options){
+			_.bindAll(this, 'removeCartProduct', 'getProductList');
+			// 从购物车中删除商品
+			sc.Events.on('removeCartProduct', this.removeCartProduct);
+			// 重新抓取
+			sc.Events.on('getProductList', this.getProductList);
+
+			this.render();
+			//sc.Events.trigger('getProductList');
+			this.getProductList();
+		},
+		events: {
+		  'click .product_term': 'searchByTerm',
+		  'click .product_term1': 'searchByPurchase'
+		},
+		render: function(){
+			this.$el.html(_.template($('#product-list-template').html()));
+		},
+
+		getProductList: function() {
+			sc.startLoading();
+			var that = this;
+			this.model.fetch({
+				data: {
+					action: 'search_products',
+					taxonomy: window.stacktech_taxonomy,
+				},
+				success: function(model, response, options){
+					that.renderProductList(model.get('product_list'));
+					sc.endLoading();
+				},
+			});
+		},
+
+		renderProductList: function(product_list){
+			var product_list_div = this.$('#product-list-container');
+			product_list_div.empty();
+			if(product_list.length > 0){
+				product_list.each(function(product){
+					var p = new sc.ProductView({model: product});
+					product_list_div.append(p.$el);
+				});
+			}else{
+					product_list_div.append('暂无商品');
+			}
+		},
+		removeCartProduct: function(product){
+			this.model.allow_addToCart(product.get('product_id'));
+		},
+		// 按分类搜索
+		searchByTerm: function(e){
+			var termId = $(e.currentTarget).attr('term-id');
+			var temp = [];
+			temp.push(termId);
+			//var category = this.model.get('category');
+			//category.push(termId);
+			this.model.set('category', temp);
+			//sc.Events.trigger('getProductList');
+			this.getProductList();
+		},
+		searchByPurchase: function(e){
+			var allow_purchase_forever =$(e.currentTarget).attr('allow_purchase_forever');
+			// alert(allow_purchase_forever);
+			// return false;
+			var temp1 = [];
+			temp1.push(allow_purchase_forever);
+			this.model.set('allow_purchase_forever', temp1);
+			this.getProductList();
+		}
+	});
+
+	sc.ProductView = Backbone.View.extend({
+		tagName: 'li',
+		className: 'theme',
+		initialize: function(options){
+			this.listenTo(this.model, 'change', this.render);
+			this.listenTo(this.model, 'remove', this.rm);
+			this.render();
+		},
+		events: {
+			'click .trail_btn': 'trail',
+			'click .add_to_cart_btn': 'addToCart',
+			'change .period': 'setPeriod',
+			'click .theme-screenshot': 'showDetail',
+		},
+		//template: _.template($('#product-template').html()),
+		render: function(){
+			var data = this.model.toJSON();
+			data.dependence_ids = JSON.stringify(this.model.get('dependence_ids'));
+			this.$el.html((_.template($('#product-template').html()))(data));
+			return this;
+		},
+		// 试用这个产品
+		trail: function(e){
+			e.preventDefault();
+			sc.Events.trigger('addTrailOrder', this.model);		
+		},
+		setPeriod: function(e) {
+			var num = $(e.currentTarget).val();
+			//var price = parseInt(num) * this.model.getCurrentPrice();
+			var price = this.model.calculateTotalPrice(parseInt(num));
+			this.$('.total-price').html(price);
+
+			// 如果有使用特价，那么同时也变更特价
+			if(this.model.get('use_discount_price')){
+				this.$('.original-price').html(parseInt(num) * this.model.get('price'));
+			}
+		},
+		addToCart: function(e) {
+			e.preventDefault();
+			var $sourceNode = this.$el.find('.theme-screenshot');
+			var $targetNode = $('.stacktech-cart-menu .ab-item');
+			var $cloneNode = $sourceNode.clone().hide().appendTo('body');
+			$cloneNode.css({position: 'absolute', top: $sourceNode.offset().top, left: $sourceNode.offset().left, zIndex: 1000,
+						               width: $sourceNode.width(), height: $sourceNode.height()});
+			$cloneNode.show();
+			$cloneNode.animate({top: $targetNode.offset().top, left: $targetNode.offset().left, width: $targetNode.width(), height: $targetNode.height()}, 1000, function () {
+				$cloneNode.remove();
+				$targetNode.jrumble({
+					x: 0,
+					y: 0,
+					rotation: 8
+				});
+				$targetNode.addClass('hover');
+				$targetNode.trigger('startRumble');
+				setTimeout(function () {
+					$targetNode.trigger('stopRumble');
+					$targetNode.removeClass('hover');
+				}, 1000);
+			});
+			// 加进本地购物车
+			sc.Events.trigger('addToCart', this.model, {period:this.$('.period').val()});
+			// 禁用添加购物车按钮
+			this.model.set('is_in_cart', 1);
+		},
+		rm: function(){
+			this.undelegateEvents();
+			this.remove();
+		},
+
+		// 加载在
+		showDetail: function() {
+			sc.globalView.productPage(this.model.id);
+			window.sc.globalRouter.navigate('product/'+this.model.id, {trigger: false});
+			
+		},
+	});
+
+	// 产品详情页面
+	sc.ProductDetailView = Backbone.View.extend({
+		initialize: function(options){
+			this.listenTo(this.model, 'change', this.render);
+			this.listenTo(this.model, 'remove', this.rm);
+			this.render();
+		},
+		events: {
+			'click .trail_btn': 'trail',
+			'click .add_to_cart_btn': 'addToCart',
+			'change .period': 'setPeriod',
+			'click .theme-screenshot': 'showDetail',
+			//'mouseover .product_thumb_image': 'showBigImage',
+			//'click .product_thumb_image': 'showBigImage',
+		},
+		//template: _.template($('#product-template').html()),
+		render: function(){
+			this.$el.html((_.template($('#product-detail-template').html()))(this.model.toJSON()));
+
+			/*
+			this.$('#product_gallery_slider').jcarousel({
+				buttonPrevHTML: '<div>&lt;</div>',
+				buttonNextHTML: '<div>&gt;</div>',
+				setupCallback: function (carousel) {
+					if (carousel.options.size > 50) {
+						carousel.options.wrap = 'circular';
+					}
+				},
+				itemVisibleInCallback: function (evt, state, first, last, prevFirst, prevLast) {
+					$(state).trigger('resize');
+				}
+
+			});
+			this.$('#product_gallery_slider .product_thumb_image').first().trigger('click');
+		   */
+
+var jcarousel = $('.jcarousel');
+
+        jcarousel
+            .on('jcarousel:reload jcarousel:create', function () {
+                var carousel = $(this),
+                    width = carousel.innerWidth();
+
+                if (width >= 600) {
+                    width = width / 3;
+                } else if (width >= 350) {
+                    width = width / 2;
+                }
+
+                carousel.jcarousel('items').css('width', Math.ceil(width) + 'px');
+            })
+            .jcarousel({
+                wrap: 'circular'
+            });
+
+        $('.jcarousel-control-prev')
+            .jcarouselControl({
+                target: '-=1'
+            });
+
+        $('.jcarousel-control-next')
+            .jcarouselControl({
+                target: '+=1'
+            });
+
+        $('.jcarousel-pagination')
+            .on('jcarouselpagination:active', 'a', function() {
+                $(this).addClass('active');
+            })
+            .on('jcarouselpagination:inactive', 'a', function() {
+                $(this).removeClass('active');
+            })
+            .on('click', function(e) {
+                e.preventDefault();
+            })
+            .jcarouselPagination({
+                perPage: 1,
+                item: function(page) {
+                    return '<a href="#' + page + '">' + page + '</a>';
+                }
+            });
+			return this;
+		},
+		showBigImage: function(e){
+			e.preventDefault();
+			var src = $(e.currentTarget).attr('data-src');
+			this.$('#product_big_image img').attr('src', src);
+
+			return false;
+		},
+		// 试用这个产品
+		trail: function(e){
+			e.preventDefault();
+			sc.Events.trigger('addTrailOrder', this.model);		
+		},
+		setPeriod: function(e) {
+			var num = $(e.currentTarget).val();
+			//var price = parseInt(num) * this.model.getCurrentPrice();
+			var price = this.model.calculateTotalPrice(parseInt(num));
+			this.$('.total-price').html(price);
+
+			// 如果有使用特价，那么同时也变更特价
+			if(this.model.get('use_discount_price')){
+				this.$('.original-price').html(parseInt(num) * this.model.get('price'));
+			}
+		},
+		addToCart: function(e) {
+			e.preventDefault();
+			var $sourceNode = this.$el.find('.theme-screenshot');
+			var $targetNode = $('.stacktech-cart-menu .ab-item');
+			var $cloneNode = $sourceNode.clone().hide().appendTo('body');
+			$cloneNode.css({position: 'absolute', top: $sourceNode.offset().top, left: $sourceNode.offset().left, zIndex: 1000,
+						               width: $sourceNode.width(), height: $sourceNode.height()});
+			$cloneNode.show();
+			$cloneNode.animate({top: $targetNode.offset().top, left: $targetNode.offset().left, width: $targetNode.width(), height: $targetNode.height()}, 1000, function () {
+				$cloneNode.remove();
+				$targetNode.jrumble({
+					x: 0,
+					y: 0,
+					rotation: 8
+				});
+				$targetNode.addClass('hover');
+				$targetNode.trigger('startRumble');
+				setTimeout(function () {
+					$targetNode.trigger('stopRumble');
+					$targetNode.removeClass('hover');
+				}, 1000);
+			});
+			// 加进本地购物车
+			sc.Events.trigger('addToCart', this.model, {period:this.$('.period').val()});
+			// 禁用添加购物车按钮
+			this.model.set('is_in_cart', 1);
+		},
+		rm: function(){
+			this.undelegateEvents();
+			this.remove();
+		},
+	});
+
+})(window.jQuery);
+
