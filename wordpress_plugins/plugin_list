@@ -1,13 +1,61 @@
 akismet
-bwp-minify
+Akismet is quite possibly the best way in the world to protect your blog from spam.
+还未使用过,看上去是用来过滤垃圾邮件的
+
+bwp minify
+Allows you to minify your CSS and JS files for faster page loading for visitors. 
+不错的前台页面处理插件,可用来缓存多个js,css文件于一个js,css文件中,减轻服务器响应
+
 fundraising
-multisite-theme-manager
+Create a fundraising page for any purpose or project.
+还未使用过
+
+multisite theme manager
+Take control of the theme admin page for your multisite network. Categorize your themes into groups, modify the name, description, and screenshot used for themes.
+多站点下,管理主题的插件
+
 network-plugin-auditor
-postman-smtp
-query-monitor
-ultimate-branding
+Adds columns to your Network Admin on the Sites, Themes and Plugins pages to show which of your sites have each plugin and theme activated. Now you can easily determine which plugins and themes are used on your network sites and which can be safely removed.
+在网络管理界面->所有站点中,增加了2列,一列显示该站点下激活的插件目录,一列显示使用的主题
+
+Reveal Network Activated Plugins
+Displays Network-Activated and Must-Use (MU) plugins, and Drop-ins on the Installed Plugins Admin panel for individual sites of a WordPress Network.
+在网络管理界面,插件管理中,显示插件是否全站点激活,或者是在列出的站点目录下激活
+
+postman smtp
+Email not reliable? Postman is the first and only WordPress SMTP plugin to implement OAuth 2.0 for Gmail, Hotmail and Yahoo Mail. Setup is a breeze with the Configuration Wizard and integrated Port Tester. Enjoy worry-free delivery even if your password changes!
+重构了wordpress的邮件发送,可配置自己需要的邮件发送服务器,内容.但是无法多站点同时开启,只能在各个站点下分别设置.
+
+query monitor
+Monitoring of database queries, hooks, conditionals and more.
+不错的测试用插件,后台打开相关页面时,统计执行的数据库操作,脚本,钩子等过程.
+
+ultimate branding
+complete white-label and branding solution for multisite. Login images, favicons, remove WordPress links and branding, and much more
+还未使用过,貌似用来去除一些wordpress自带的图标,链接,个性化站点用
+
 unconfirmed
-w3-total-cache
-wpfront-user-role-editor
-wp-security-audit-log
-wp-super-cache
+Allows admins on a WordPress Multisite network to manage unactivated users, by either activating them manually or resending the activation email.
+wordpress默认下注册用户时,需要打开一个链接激活用户,这里可以管理直接激活用户,或者再给用户发送带激活链接的邮件
+
+w3 total cache
+The highest rated and most complete WordPress performance plugin. Dramatically improve the speed and user experience of your site. Add browser, page, object and database caching as well as minify and content delivery network (CDN) to WordPress.
+非常高效的缓存插件,也可以添加cdn.
+
+wpfront user role editor
+Allows you to manage user roles.
+可以用来增加新的用户类型,设置所有用户类型(例如订阅者,编辑等)的权限
+
+wp security audit log
+Identify WordPress security issues before they become a problem. Keep track of everything happening on your WordPress including WordPress users activity. Similar to Windows Event Log and Linux Syslog, WP Security Audit Log generates a security alert for everything that happens on your WordPress blogs and websites. Use the Audit Log Viewer included in the plugin to see all the security alerts.
+跟踪记录用户的各个操作等相关信息,前台和后台都会记录.由于是在每个页面都增加一个脚本发送ajax记录当前用户操作,
+所以相关的耗费服务器资源.
+
+wp super cache
+Very fast caching plugin for WordPress.
+轻量级缓存插件
+
+Register IPs
+Logs the IP of the user when they register a new account.
+注册新用户时,会记录该用户的ip地址.
+
