@@ -59,3 +59,21 @@ Register IPs
 Logs the IP of the user when they register a new account.
 注册新用户时,会记录该用户的ip地址.
 
+Support System
+Set up an awesome support ticket system on any WordPress site, complete with FAQ.
+增加一个工单系统,管理员能管理用户提出的需求
+
+signup password
+wordpress默认在前台注册用户时,无法设置登入密码.该插件可增加密码设置.
+
+Disable Comments
+Allows administrators to globally disable comments on their site. Comments can be disabled according to post type.
+可以针对所有的post_type,自定义是否对其关闭评论功能.
+
+
+
+
+
+
+
+
