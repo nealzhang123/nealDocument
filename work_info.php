@@ -78,3 +78,6 @@ query-monitor    speed up the webside backend
 
 useful study website
 http://www.css88.com/
+
+
+docker run -d --name etongapp -p 80:80 -v /home/neal/repo/stacktechmu:/var/www/html -v /home/neal/repo/log:/var/log/apache2 tutum/apache-php
