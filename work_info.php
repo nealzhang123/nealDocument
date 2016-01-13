@@ -18,7 +18,9 @@ http://abcnewsradioonline.com/business-news/rss.xml
 
 
 **docker configation for the image 'stacktech/lamp' tech created on docker.com
-docker run -d --name techserver -p 80:80 -p 3306:3306 -e MYSQL_PASS="abc123" -v /home/neal/repo/wpbitm:/var/www/html -v /home/neal/db:/var/lib/mysql -v /home/neal/repo/log:/var/log/apache2 stacktech/lamp
+docker run -d --name stacktech -p 80:80 -p 3306:3306 -e MYSQL_PASS="abc123" -v /home/neal/repo/stacktechmu:/var/www/html -v /home/neal/db:/var/lib/mysql -v /home/neal/repo/log:/var/log/apache2 stacktech/lamp
+
+docker run -d --name phpunit -p 81:80 -p 3307:3306 -e MYSQL_PASS="abc123" -v /home/neal/repo/phpunit:/var/www/html -v /home/neal/db:/var/lib/mysql -v /home/neal/repo/log:/var/log/apache2 stacktech/lamp
 
 docker run -d --name allserver -p 80:80 -p 3306:3306 -e MYSQL_PASS="abc123" -v /home/neal/repo:/var/www/html -v /home/neal/db:/var/lib/mysql -v /home/neal/repo/log:/var/log/apache2 stacktech/lamp
 
@@ -81,3 +83,10 @@ http://www.css88.com/
 
 
 docker run -d --name etongapp -p 80:80 -v /home/neal/repo/stacktechmu:/var/www/html -v /home/neal/repo/log:/var/log/apache2 tutum/apache-php
+
+//FormCraft regedit
+lzhengqc@gmail.com
+35ca881a-1f1a-46ee-a06e-ff8d28c356fa
+
+//wordpress phpunit
+https://make.wordpress.org/core/handbook/testing/automated-testing/phpunit/
