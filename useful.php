@@ -40,6 +40,9 @@ function autoloadClass($classname){
         require_once $filename;
     }
 }
+
+//Useful for creating new tables and updating existing tables to a new structure.
+dbDelta
 *******************************************************************************
 
 
