@@ -11,7 +11,7 @@ License: GPL
 class StacktechSmsverify{
 	static $sms_expired_time = 60;
 
-	function init(){
+	public function init(){
 		global $user_id;
 		
 		$is_verify_phone = get_user_meta( $user_id,'is_verify_phone',true );
@@ -34,6 +34,7 @@ class StacktechSmsverify{
 							$html .= $verify_phone;
 						}else{
 							$html .= '<input type="text" id="verify_phone" name="verify_phone" size="12" maxlength="12" placeholder="'. __('输入手机号码') .'" value="'.$verify_phone.'"/>';
+						}
 						$html .= '</span>
 						<button type="button" id="verify_phone_button" class="button button-secondary wp-generate-pw hide-if-no-js" onClick="get_mobile_code(\'verify_phone\');" '.$disabled.' >' . $verify_phone_button . '</button>';
 						if($is_verify_phone){
@@ -52,9 +53,9 @@ class StacktechSmsverify{
 			</table>';
 		echo $html;
 		wp_enqueue_script( 'stacktech-sms-script', plugin_dir_url( __FILE__ ) . 'stacktech_sms.js' );
-		
 	}
 
+	//发送请求到短信服务商,
 	public function stacktech_send_sms_ajax(){
 
 		session_start();
@@ -63,16 +64,15 @@ class StacktechSmsverify{
 	    include_once('stacktech_sms.php');
 	    $random_num = rand(100000,999999);
 
-	    $msg = sendTemplateSMS($verify_phone,array($random_num,'1'),1);
-	    error_log('test at 57:'.var_export($msg,true));
+	    $msg = sendTemplateSMS($verify_phone,array($random_num,'1'),44229);
+	    //error_log('test at 57:'.var_export($msg,true));
 
 	    if( 0 == $msg['error_code'] ){
 	    	$return_sms_msg = $random_num;
 	    	$_SESSION['stacktech_return_sms_msg'] = $return_sms_msg;
 		    $_SESSION['stacktech_sms_start_time'] = time();
 	    	$json = array(
-		    	'error'=>'0',
-		    	'return_sms_msg' => $return_sms_msg
+		    	'error'=>'0'
 		    );
 	    }else{
 	    	$json = array(
@@ -84,6 +84,7 @@ class StacktechSmsverify{
 		exit();
 	}
 
+	//判断输入的验证码,是否已经超时,是否与之前发送给客户的一致
 	public function stacktech_verify_sms_ajax(){
 		session_start();
 		$verify_sms_msg = trim($_POST['verify_sms_msg']);
@@ -114,6 +115,7 @@ class StacktechSmsverify{
 		exit();
 	}
 
+	//仅在未验证情况下,可以随意更新手机号码
 	public function update_user_phone(){
 		global $user_id;
 
@@ -129,9 +131,35 @@ class StacktechSmsverify{
 		return true;
 	}
 
+	public function edit_for_admin(){
+		global $user_id;
+
+		$is_verify_phone = get_user_meta( $user_id,'is_verify_phone',true );
+		$verify_phone = get_user_meta( $user_id,'verify_phone',true );
+
+		$html = '<table class="form-table">
+				<tr class="user-verify-phone-wrap">
+					<th>' . __( '手机号码' ) . '</th>
+					<td>
+						<span id="verify_phone_span">';
+						if($is_verify_phone){
+							$html .= $verify_phone;
+						}else{
+							$html .= '<input type="text" id="verify_phone" name="verify_phone" size="12" maxlength="12" placeholder="'. __('输入手机号码') .'" value="'.$verify_phone.'"/>';
+						}
+						$html .= '</span>
+					</td>
+				</tr>
+			</table>';
+		echo $html;
+	}
+
 }
 
 add_action( 'show_user_profile',array('StacktechSmsverify','init') );
 add_action( 'wp_ajax_stacktech-send-sms-ajax', array('StacktechSmsverify','stacktech_send_sms_ajax') );
 add_action( 'wp_ajax_stacktech-verify-sms-ajax', array('StacktechSmsverify','stacktech_verify_sms_ajax') );
 add_action( 'personal_options_update',array('StacktechSmsverify','update_user_phone') );
+
+add_action( 'edit_user_profile',array('StacktechSmsverify','edit_for_admin') );
+add_action( 'edit_user_profile_update',array('StacktechSmsverify','update_user_phone') );

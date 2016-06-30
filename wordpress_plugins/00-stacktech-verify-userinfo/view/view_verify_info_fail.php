@@ -1,0 +1,1 @@
+<?php echo $userinfo->data->display_name; ?>你好,你的实名验证基本信息验证失败,请根据相关错误提示重新填写.<?php echo $user_siteurl;?>

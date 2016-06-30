@@ -60,7 +60,7 @@ sudo mount 192.168.2.122:/var/nfs /home/neal/Desktop/share/
 127.0.0.1   static.adzerk.net
 127.0.0.1   ajax.googleapis.com
 127.0.0.1   radio1.itmwpb.com
-127.0.0.1   apis.google.com
+127.0.0.1   apis.google.com;''
 93.184.216.127 s.w.org
 93.184.216.127 ps.w.org
 192.0.78.13 www.wordpress.com wordpress.com
@@ -90,3 +90,9 @@ lzhengqc@gmail.com
 
 //wordpress phpunit
 https://make.wordpress.org/core/handbook/testing/automated-testing/phpunit/
+
+//debug on the front page
+debug-this
+
+//create more than one contain for local
+docker run -d --name stackstat -p 8081:80 -p 3307:3306 -e MYSQL_PASS="abc123" -v /home/neal/repo/stackstat:/var/www/html -v /home/neal/db:/var/lib/mysql -v /home/neal/repo/log:/var/log/apache2 stacktech/lamp

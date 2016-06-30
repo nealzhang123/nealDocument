@@ -47,9 +47,66 @@ add_filter('wpmu_validate_user_signup', 'wpmu_signup_password_filter');
 add_filter('signup_blogform', 'wpmu_signup_password_fields_pass_through');
 add_filter('add_signup_meta', 'wpmu_signup_password_meta_filter',99);
 add_filter('random_password', 'wpmu_signup_password_random_password_filter');
+
+add_action('wp_ajax_stacktech-verify-blogname-ajax', 'stacktech_verify_blogname_ajax');
+add_action('wp_ajax_nopriv_stacktech-verify-blogname-ajax', 'stacktech_verify_blogname_ajax');
 //------------------------------------------------------------------------//
 //---Functions------------------------------------------------------------//
 //------------------------------------------------------------------------//
+function stacktech_verify_blogname_ajax(){
+	global $wpdb, $domain;
+
+	$blogname = $_POST['blogname'];
+	$error = '';
+	$current_site = get_current_site();
+	$base = $current_site->path;
+	$user = '';
+
+	if ( is_user_logged_in() )
+		$user = wp_get_current_user();
+
+	if ( preg_match( '/[^a-z0-9]+/', $blogname ) )
+		$error = __( 'Only lowercase letters (a-z) and numbers are allowed.' );
+
+	if ( strlen( $blogname ) < 4 && !is_super_admin() )
+		$error = __( 'Site name must be at least 4 characters.' );
+
+	if ( strpos( $blogname, '_' ) !== false )
+		$error = __( 'Sorry, site names may not contain the character &#8220;_&#8221;!' );
+	if ( preg_match( '/^[0-9]*$/', $blogname ) )
+		$error = __( 'Sorry, site names must have letters too!' );
+
+	// Check if the domain/path has been used already.
+	if ( is_subdomain_install() ) {
+		$mydomain = $blogname . '.' . preg_replace( '|^www\.|', '', $domain );
+		$path = $base;
+	} else {
+		$mydomain = "$domain";
+		$path = $base.$blogname.'/';
+	}
+	if ( domain_exists($mydomain, $path, $current_site->id) )
+		$error = __( 'Sorry, that site already exists!' );
+
+	if ( username_exists( $blogname ) ) {
+		if ( ! is_object( $user ) || ( is_object($user) && ( $user->user_login != $blogname ) ) )
+			$error = __( 'Sorry, that site is reserved!' );
+	}
+
+	// Has someone already signed up for this domain?
+	$signup = $wpdb->get_row( $wpdb->prepare("SELECT * FROM $wpdb->signups WHERE domain = %s AND path = %s", $mydomain, $path) ); // TODO: Check email too?
+	if ( ! empty($signup) ) {
+		$diff = current_time( 'timestamp', true ) - mysql2date('U', $signup->registered);
+		// If registered more than two days ago, cancel registration and let this signup go through.
+		if ( $diff > 2 * DAY_IN_SECONDS )
+			$wpdb->delete( $wpdb->signups, array( 'domain' => $mydomain , 'path' => $path ) );
+		else
+			$error = __( 'That site is currently reserved but may be available in a couple days.' );
+	}
+
+	echo $error;
+	exit();
+}
+
 
 //trigger error on activation
 if ( !is_multisite() ) exit( 'The Signup Password plugin is only compatible with WordPress Multisite.' );
@@ -144,12 +201,13 @@ if ( ! function_exists( 'signup_password_meta_filter' ) ) {
 
 function wpmu_signup_password_meta_filter($meta) {
 	global $signup_password_use_encryption;
+
 	$password_1 = isset($_POST['password_1'])?$_POST['password_1']:'';
 	if ( !empty( $password_1 ) ) {
 		if ( $signup_password_use_encryption == 'yes' ) {
 			$password_1 = wpmu_signup_password_encrypt($password_1);
 		}
-		$add_meta = array('password' => $password_1);
+		$add_meta = array('password' => $password_1 );
 		$meta = array_merge($add_meta, $meta);
 	}
 	return $meta;
@@ -234,6 +292,9 @@ if ( ! function_exists( 'signup_password_fields_pass_through' ) ) {
 function wpmu_signup_password_fields_pass_through() {
 	global $signup_password_form_printed;
 
+	wp_enqueue_script( 'stacktech-signup-verifyBlog-script', plugin_dir_url( __FILE__ ) . 'verify_signup_blog.js' );
+	wp_localize_script( 'stacktech-signup-verifyBlog-script', 'stacktech_obj', array('admin_ajax' => admin_url( 'admin-ajax.php' ) ) );
+
 	if ( !empty( $_POST['password_1'] ) && !empty( $_POST['password_2'] ) ) {
 		$signup_password_form_printed = 1;
 		?>
@@ -257,6 +318,8 @@ if ( ! function_exists( 'signup_password_fields' ) ) {
 function wpmu_signup_password_fields($errors) {
 	global $signup_password_form_printed;
 
+	wp_enqueue_script( 'stacktech-signup-verifyUser-script', plugin_dir_url( __FILE__ ) . 'verify_signup_user.js' );
+
 	if ($errors && method_exists($errors, 'get_error_message')) {
 		$error = $errors->get_error_message('password_1');
 	} else {
@@ -264,17 +327,22 @@ function wpmu_signup_password_fields($errors) {
 	}
 	$signup_password_form_printed = 1;
 	?>
-    <label for="password"><?php _e('Password', 'signup_password'); ?>:</label>
-		<?php
-        if($error) {
-			echo '<p class="error">' . $error . '</p>';
-        }
-		?>
-		<input name="password_1" type="password" id="password_1" value="" autocomplete="off" maxlength="20" /><br />
-		(<?php _e('Leave fields blank for a random password to be generated.', 'signup_password') ?>)
-    <label for="password"><?php _e('Confirm Password', 'signup_password'); ?>:</label>
-		<input name="password_2" type="password" id="password_2" value="" autocomplete="off" maxlength="20" /><br />
-		(<?php _e('Type your new password again.', 'signup_password') ?>)
+    <label for="password"><?php _e('Password', 'signup_password'); ?>：</label>
+		
+		<input placeholder="<?php _e('Leave fields blank for a random password to be generated.', 'signup_password') ?>"name="password_1" type="password" id="password_1" value="" autocomplete="off" maxlength="20" /><br />
+    <label for="password"><?php _e('Confirm Password', 'signup_password'); ?>：</label>
+    <?php 
+	if( $error ){
+		$error_password = 'error_bg'; 
+	}
+    ?>
+	<input name="password_2" class="<?php echo $error_password;?>" type="password" id="password_2" value="" autocomplete="off" maxlength="20" placeholder="<?php _e('Type your new password again.', 'signup_password') ?>"/><br />
+	<?php
+    if($error) {
+		echo '<p class="error signup_password"><i class="fa fa-exclamation-triangle"></i>' . $error . '</p>';
+    }
+	?>
+	<p class="error signup_password" style="display:none;"><i class="fa fa-exclamation-triangle"></i><?php _e('Passwords do not match.', 'signup_password'); ?></p>
 	<?php
 }
 

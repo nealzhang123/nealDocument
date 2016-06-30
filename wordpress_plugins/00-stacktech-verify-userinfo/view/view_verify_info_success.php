@@ -1,0 +1,1 @@
+<?php echo $userinfo->data->display_name; ?>你好,你的实名验证基本信息已经完成.<?php echo $user_siteurl;?>

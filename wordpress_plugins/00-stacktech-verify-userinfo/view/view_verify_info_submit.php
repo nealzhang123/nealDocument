@@ -1,0 +1,1 @@
+<?php echo $userinfo->data->display_name; ?>你好,你的实名验证基本信息提交成功,我们将于三个工作日内完成审核.<?php echo $user_siteurl;?>

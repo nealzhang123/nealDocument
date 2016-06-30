@@ -1,0 +1,1 @@
+<?php echo $userinfo->data->display_name; ?>你好,你的实名验证银行账号验证失败,请确认账号是否正确.<?php echo $user_siteurl;?>

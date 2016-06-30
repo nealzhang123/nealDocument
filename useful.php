@@ -25,6 +25,9 @@ $string_gmt = date_create( $value, new DateTimeZone( $tz ) );
 $string_gmt->setTimezone( new DateTimeZone( 'PRC' ) );
 $date = $string_gmt->format( 'Y-m-d' );
 
+//直接设置时间
+date_default_timezone_set('PRC');
+
 //判断插件是否处于激活状态
 is_plugin_active('ninja-forms/ninja-forms.php')
 
@@ -99,3 +102,17 @@ nginx: configuration file /alidata/server/nginx/conf/nginx.conf test is successf
 //mysql 学习过程中一些实用的例子
 //查询重复字段时候只取得一行数据
 SELECT *, count(distinct meta_value) FROM $postmeta_table WHERE meta_key = 'hospital_table_no' group by meta_value
+
+//数据库直接加密
+INSERT INTO `wsal_occurrences`(`site_id`, `alert_id`, `is_migrated`) VALUES (1,2,ENCODE('dong','bb'))
+
+SELECT DECODE(ENCODE('dong','aa'),'aa');
+*******************************************************************************
+
+*******************************************************************************
+//一些js方面的学习记录吧
+//jQuery1.7版本以上不用live方法,用on方法
+$(document).on("click","#id",function(){
+ alert("The paragraph was clicked.");
+});
+*******************************************************************************

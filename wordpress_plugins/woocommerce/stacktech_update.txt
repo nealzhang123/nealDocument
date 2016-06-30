@@ -1,0 +1,7 @@
+	 * Output the shortcode.
+
+			// 这里我们拓展了woocommerce
+			$end = apply_filters('woocommerce_my_account_continue', true );
+			if( !$end ){
+				return ;
+			}
