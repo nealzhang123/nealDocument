@@ -1,0 +1,55 @@
+<?php
+/**
+ * The template for displaying all pages
+ *
+ * This is the template that displays all pages by default.
+ * Please note that this is the WordPress construct of pages and that
+ * other 'pages' on your WordPress site will use a different template.
+ *
+ * @package WordPress
+ * @subpackage Twenty_Fourteen
+ * @since Twenty Fourteen 1.0
+ */
+
+get_header(); 
+ 
+?>
+<div class="top-shadow"></div>
+	
+	<section class="page-title">
+	<div class="page-background">
+		<div class="pattern1"></div>
+	</div>
+	<div class="bottom-shadow" style="top:176px;"></div>
+		<div class="title-wrapper">
+			<div class="title-bg">
+				<div class="title-content">
+					<div class="two-third">
+						<h2>single-post <?php the_title(); ?></h2>
+					</div>
+					<div class="one-third column-last">		
+					</div>
+					<div class="clear"></div>
+				</div><!--end title-content-->
+			</div>
+		</div><!--end title-wrapper-->
+	</section>	
+    <div class="centered-wrapper">
+       <?php
+			the_post();
+			 the_content();
+			 
+			 ?>
+    
+    
+    <div class="clear"></div>
+    </div>    
+
+
+
+
+
+
+<?php
+get_footer();
+?>

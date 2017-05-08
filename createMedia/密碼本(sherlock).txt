@@ -1,0 +1,201 @@
+服務器:
+
+***************************************************************************************
+阿里雲管理控制台
+登陸:https://cn.aliyun.com/
+登陸賬號: info@c-m.hk    密碼: CMweb21326468
+=================================================================================
+服務器: Requs.hk	ip: 112.74.209.26	url: http://www.requs.hk/
+服務器賬號: root      	密碼: RequsCm21326468
+
+後台登陸賬號: admin	密碼: hongkongleige21326468~	url: http://www.requs.hk/wp-admin
+
+數據庫配置文件所示:
+define('DB_NAME', 'requs');
+define('DB_USER', 'requs');
+define('DB_PASSWORD', 'Cm21326468');
+define('DB_HOST', 'rds9010q19l415t0b7d1.mysql.rds.aliyuncs.com');
+看起來使用的是阿里雲上的雲數據庫RDS版
+requs database
+
+
+---------------------------------------------------------------------------------
+服務器: sz-ftp-server		ip: 120.24.233.54
+服務器賬號: cmwebdesign		密碼: cmwebdesign123
+服務器賬號: cm			密碼: cmadmin123 
+
+數據庫
+賬號: cm	密碼: Leocheung21326468
+賬號: danny	密碼: Ud0891802183
+
+作為公司共享文件使用的ftp服務器
+
+
+---------------------------------------------------------------------------------
+服務器: WebServer	ip: 58.96.172.29    (常用,管理多個站點) 換成 47.90.21.119	(已經移植到新服務器后停用)
+服務器賬號: root	密碼: CmWeb21326468
+數據庫(本地) 
+賬號:  cm-sql	密碼: sqlcm!@#
+賬號:  root	密碼: CMadmin123
+搭建了一個子站點 php.cmweb.hk 對應裡面的phpmyadmin工具(嘛,我還是用本地的好了)
+
+
+c-m.com.hk 指向這個107.180.50.245,意義不明,先記錄下
+---------------------------------------------------------------------------------
+服務器: MailServer 	ip: 120.24.68.186 現在做測試用
+賬號：root	密碼：Cmtest123
+MySQL:
+account:root	password:81b40e208f
+
+---------------------------------------------------------------------------------
+服務器: Website-server	ip: 47.52.2.0     新的服務器(常用,管理多個站點)
+賬號：root	密碼：Cmweb21326468
+MySQL:
+account:root	password: CreateMedia21326468	
+account:cm-sql	password: sqlcm!@#	低權限(客戶網站用)
+
+
+=================================================================================
+
+
+
+DNS服務器
+=================================================================================
+eznow
+登陸: http://hk.eznow.com/
+登陸賬號: leo.cheung1985@gmail.com    密碼: l13424216141
+
+---------------------------------------------------------------------------------
+美橙
+登陸: http://www.cndns.com/members/signin.aspx
+登陸賬號: info@c-m.hk    密碼: Leocm21326468
+
+一個郵件服務器管理:
+公司郵件服務器 c-m.hk
+admin@c-m.hk    njoWkQjavzdGvP
+
+N個虛擬主機+服務器 
+列出一下ip地址在這裡,有需求再去找好了,有對應的ftp賬號密碼,
+數據庫看配置去找好了,或者根據名字去找.
+58.64.190.97
+210.209.68.219
+113.10.180.238
+58.64.140.253
+210.209.123.215
+113.10.158.95
+58.64.134.52
+
+
+
+---------------------------------------------------------------------------------
+创宇云 (看到好多免費版的)
+登陸: https://www.yunaq.com/
+登陸賬號: tony.wong@c-m.hk    密碼: cmadmin21326468
+
+---------------------------------------------------------------------------------
+godaddy
+登陸: https://sg.godaddy.com/zh/
+登陸賬號: Chantaiman28car02@gmail.com    密碼: Licheng2016
+就一個站點 http://www.wf-car.com/  宏發汽車 ip: 160.153.129.216
+數據庫: sq_lsibabc 	數據庫用戶名: sq_lsibabc	密碼: lsibabc 
+ 
+
+登陸: https://sg.godaddy.com/zh/
+登陸賬號: 56259952    密碼: Derek21489218
+
+管理站點:
+ywfiredoor.com
+fullspiritmarble.com
+
+=================================================================================
+
+
+
+*********************************************************************************
+功能性站點
+
+手機傳媒營銷網站
+url: http://mm.68t68.cn/Login.aspx
+用户名：requs  密码：kobe13424216141
+
+
+公司使用的框架: wordpress thinkphp douphp Joomla
+
+以後使用wordpress開發的站點創建2個後台賬號
+一個統一的賬號 admin 密碼: CMadmin123
+一個客戶使用的賬號 cmadmin 密碼: cmadmin+時間
+
+
+
+部分站點與後台管理
+站點: c-m.hk		賬號: admin 	密碼: CMadmin123
+站點: cmweb.hk		賬號: admin 	密碼: cmweb.hkadmin
+站點: stat.c-m.hk 	賬號: cmadmin	密碼: cmstat123
+站點: test4.cmweb.hk	賬號: wen0732	密碼: wen123
+站點: stats.c-m.hk	賬號: wen0732 	密碼: wen123
+站點: tel23701160.com   賬號: admin888	密碼: WP1601291810
+站點: requs.hk		賬號: admin	密碼: hongkongleige21326468~
+
+
+
+
+公司電話事務
+電話系統網址:
+深圳: http://183.63.181.84:8099/login.php
+帐号242010
+
+密码dsa123
+
+廣州: http://183.63.29.245:8099/login.php
+013046
+cmadmin123
+
+http://justprotel.com:1245
+
+----------------------------------
+
+网络账号                         密码
+075508208572@163.gd(机房)   	 98661983
+075505423234@163.gd(机房)   	 	
+075506817864@163.gd(Leo room)    22625473
+
+wifi login
+leo room      	cm21326468	admin	cmadmin
+Creation Media	CM21326468	admin	admin
+CM Back		Cm21326468
+Leo Room2	Leo21326468	adminadmin
+----------------------------------
+
+
+------------------------------------
+
+CRM伺服器（Teamview訪問）
+628626318
+Cm21326468
+
+遠程訪問：192.168.40.190
+Administrator
+Cm21326468
+
+----------------------------------
+
+網站發送郵箱
+cmweb@c-m.hk
+cm21326468
+
+
+美橙新開通的郵箱密碼一致為: CMadmin123~
+
+
+我們公司一向合作的卡片製作公司，請保留在你們表格內！
+http://www.e-print.com.hk/
+
+保諾時網上印刷有限公司
+觀塘總店: 九龍觀塘道436-446號官塘工業中心第四期地下B舖 (港鐵觀塘站D出口)
+電話: 2344 6668    傳真: 2344 6618     電郵: sales@e-print.com.hk
+
+
+閣下e-print自助平臺密碼已重設，帳號資料如下：
+登入帳號：creationmedia
+登錄密碼：16592162
+登錄地址：http://customer.e-print.com.hk/

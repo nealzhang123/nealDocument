@@ -1,0 +1,164 @@
+
+UPDATE 100aluminium.wp_posts SET guid = REPLACE (guid, 'http://nealtest.com', 'http://test2.cmweb.hk')
+
+
+
+$('.feature-img').find('iframe').css
+
+
+
+portrait
+
+
+SELECT SUM(DATA_LENGTH)+SUM(INDEX_LENGTH) FROM information_schema.tables WHERE TABLE_SCHEMA='database_name';
+
+
+
+
+Dear Peggy，
+
+因服務器升級，需要更換IP，此客人的DNS不在我司，請盡快聯繫客人將網站ky-ge.com.hk的DNS的IP改為： 47.90.21.119 ，以免網站打不開，謝謝！
+
+
+letter-spacing: 1px;
+
+cursor:pointer
+
+
+$("html,body").animate({scrollTop: $("#bds_share_more").offset().top-30}, 1000);
+
+
+transform: scale(1.1, 1.1);
+    transition: .3s transform;
+
+
+
+
+curl -v --referer "http://www.google.com" --user-agent "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/534.30 (KHTML, like Gecko) Chrome/12.0.742.112 Safari/534.30" http://createone.com.hk/
+
+
+
+admin20170111
+
+
+::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    color:    #909;
+}
+
+
+
+sudo dpkg-reconfigure dash
+
+
+
+網站後台賬號: admin     密碼: cmweb.hkadmin
+
+
+
+mstsc 
+
+
+
+UPDATE wp_posts SET guid = replace( guid, 'nealtest7.com', 'test7.cmweb.hk' ) ;
+
+forever match
+cmadmin
+cmadmin20170309
+
+leigeleocheung21326468
+http://forevermatch.hk/
+
+
+
+UPDATE wp_posts SET guid = replace( guid, 'test7.cmweb.hk', 'sj6989.com' ) ;
+
+
+
+php方式不緩存頁面
+<?php
+		  //set headers to NOT cache a page
+		  header("Cache-Control: no-cache, must-revalidate"); //HTTP 1.1
+		  header("Pragma: no-cache"); //HTTP 1.0
+		  header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date in the past
+		?>
+
+
+id IN ('71','68','67')
+
+
+UPDATE wp_posts SET guid = replace( guid, 'nealtest9.com', 'test7.cmweb.hk' ) ;
+UPDATE wp_posts SET guid = replace( guid, 'www.dragonacm.com.hk', 'test5.cmweb.hk' ) ;
+UPDATE wp_posts SET guid = replace( guid, 'www.kawapiano.com', 'test5.cmweb.hk' ) ;
+UPDATE wp_posts SET guid = replace( guid, 'www.wochefurniture.com.hk', 'test6.cmweb.hk' ) ;
+UPDATE wp_posts SET guid = replace( guid, 'test5.cmweb.hk', 'nealtest12.com' ) ;
+UPDATE wp_posts SET guid = replace( guid, 'test3.cmweb.hk', 'pro-translink.com' ) ;
+
+
+
+SHOW VARIABLES LIKE 'open%'
+mysql_connect ---> mysqli_connect
+mysql_select_db  ---> mysqli_select_db
+mysql_error ---> mysqli_connect_error()
+mysql_query ---> mysqli_query
+mysql_fetch_assoc  ---> mysqli_fetch_assoc
+
+public static
+
+不錯的黑體字體
+    font-family: "Arial","Microsoft YaHei","黑体","宋体",sans-serif;
+sherlock.cheung@c-m.hk
+info@c-m.hk
+
+
+Dear Peggy
+
+因服務器升級, 需要更換IP，此客人的DNS不在我司
+請盡快聯繫客人(4月20日前)將網站good-will.hk的DNS的IP改為： 47.52.2.0，以免網站打不開，謝謝！
+
+
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' IDENTIFIED BY 'CMadmin123' WITH GRANT OPTION; 
+
+
+box-shadow: 0 3px 3px #d8d8d8;
+
+j1.com.hk
+stockadesic.com.hk
+meifung.hk
+
+
+
+
+meiko.hk
+rcgroup.com.hk
+1able.com.hk
+
+
+
+$tmpdata=getResult($sql);
+			$data['num']=count($tmpdata);
+
+
+119.137.114.0
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'118.143.160.72' IDENTIFIED BY 'CreateMedia21326468' WITH GRANT OPTION;
+flush privileges;
+
+
+数据库用户名
+数据库密码
+j1.com.hk\j1\config\config.php
+j1.com.hk\j1\data\config\config.php
+j1.com.hk\j1\admin\config\config.php
+j1.com.hk\j1\admin\data\config\config.php
+
+
+http://nealtest12.com/
+ngaichakhair.com
+
+
+https://www.google.com.hk/maps/place/%E8%A7%80%E5%A1%98%E5%B7%A7%E6%98%8E%E8%A1%9794-96%E8%99%9F%E9%B4%BB%E5%9C%96%E4%B8%AD%E5%BF%83/@22.3128849,114.2201845,21z/data=!4m5!3m4!1s0x34040148a534a8d9:0xa9be28d897545b38!8m2!3d22.3128786!4d114.220335
+
+test5.cmweb.hk
+
+600 height
+
+110.12.0.0
