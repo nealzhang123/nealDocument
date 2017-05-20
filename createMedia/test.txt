@@ -1,7 +1,7 @@
 
 UPDATE 100aluminium.wp_posts SET guid = REPLACE (guid, 'http://nealtest.com', 'http://test2.cmweb.hk')
 
-
+12
 
 $('.feature-img').find('iframe').css
 
@@ -15,9 +15,9 @@ SELECT SUM(DATA_LENGTH)+SUM(INDEX_LENGTH) FROM information_schema.tables WHERE T
 
 
 
-Dear Peggy£¬
+Dear Peggyï¼Œ
 
-Òò·ş„ÕÆ÷Éı¼‰£¬ĞèÒª¸ü“QIP£¬´Ë¿ÍÈËµÄDNS²»ÔÚÎÒË¾£¬Õˆ±M¿ìÂ“ÀM¿ÍÈËŒ¢¾WÕ¾ky-ge.com.hkµÄDNSµÄIP¸Äé£º 47.90.21.119 £¬ÒÔÃâ¾WÕ¾´ò²»é_£¬ÖxÖx£¡
+å› æœå‹™å™¨å‡ç´šï¼Œéœ€è¦æ›´æ›IPï¼Œæ­¤å®¢äººçš„DNSä¸åœ¨æˆ‘å¸ï¼Œè«‹ç›¡å¿«è¯ç¹«å®¢äººå°‡ç¶²ç«™ky-ge.com.hkçš„DNSçš„IPæ”¹ç‚ºï¼š 47.90.21.119 ï¼Œä»¥å…ç¶²ç«™æ‰“ä¸é–‹ï¼Œè¬è¬ï¼
 
 
 letter-spacing: 1px;
@@ -51,7 +51,7 @@ sudo dpkg-reconfigure dash
 
 
 
-¾WÕ¾ááÌ¨Ù~Ì–: admin     ÃÜ´a: cmweb.hkadmin
+ç¶²ç«™å¾Œå°è³¬è™Ÿ: admin     å¯†ç¢¼: cmweb.hkadmin
 
 
 
@@ -74,7 +74,7 @@ UPDATE wp_posts SET guid = replace( guid, 'test7.cmweb.hk', 'sj6989.com' ) ;
 
 
 
-php·½Ê½²»¾´æí“Ãæ
+phpæ–¹å¼ä¸ç·©å­˜é é¢
 <?php
 		  //set headers to NOT cache a page
 		  header("Cache-Control: no-cache, must-revalidate"); //HTTP 1.1
@@ -104,16 +104,16 @@ mysql_fetch_assoc  ---> mysqli_fetch_assoc
 
 public static
 
-²»åeµÄºÚów×Öów
-    font-family: "Arial","Microsoft YaHei","ºÚÌå","ËÎÌå",sans-serif;
+ä¸éŒ¯çš„é»‘é«”å­—é«”
+    font-family: "Arial","Microsoft YaHei","é»‘ä½“","å®‹ä½“",sans-serif;
 sherlock.cheung@c-m.hk
 info@c-m.hk
 
 
 Dear Peggy
 
-Òò·ş„ÕÆ÷Éı¼‰, ĞèÒª¸ü“QIP£¬´Ë¿ÍÈËµÄDNS²»ÔÚÎÒË¾
-Õˆ±M¿ìÂ“ÀM¿ÍÈË(4ÔÂ20ÈÕÇ°)Œ¢¾WÕ¾good-will.hkµÄDNSµÄIP¸Äé£º 47.52.2.0£¬ÒÔÃâ¾WÕ¾´ò²»é_£¬ÖxÖx£¡
+å› æœå‹™å™¨å‡ç´š, éœ€è¦æ›´æ›IPï¼Œæ­¤å®¢äººçš„DNSä¸åœ¨æˆ‘å¸
+è«‹ç›¡å¿«è¯ç¹«å®¢äºº(4æœˆ20æ—¥å‰)å°‡ç¶²ç«™good-will.hkçš„DNSçš„IPæ”¹ç‚ºï¼š 47.52.2.0ï¼Œä»¥å…ç¶²ç«™æ‰“ä¸é–‹ï¼Œè¬è¬ï¼
 
 
 GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' IDENTIFIED BY 'CMadmin123' WITH GRANT OPTION; 
@@ -143,8 +143,8 @@ GRANT ALL PRIVILEGES ON *.* TO 'root'@'118.143.160.72' IDENTIFIED BY 'CreateMedi
 flush privileges;
 
 
-Êı¾İ¿âÓÃ»§Ãû
-Êı¾İ¿âÃÜÂë
+æ•°æ®åº“ç”¨æˆ·å
+æ•°æ®åº“å¯†ç 
 j1.com.hk\j1\config\config.php
 j1.com.hk\j1\data\config\config.php
 j1.com.hk\j1\admin\config\config.php
